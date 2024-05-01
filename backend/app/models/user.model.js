@@ -20,10 +20,10 @@ const User = mongoose.model(
         type: String,
         required: true,
       },
-    roles: [{
+    roles: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Role"
-      }],
+      },
     files: [
         {
           filename: String,

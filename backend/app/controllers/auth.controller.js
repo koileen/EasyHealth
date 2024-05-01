@@ -16,14 +16,9 @@ exports.signup = async (req, res) => {
     });
 
     const savedUser = await user.save();
-    
-    if (req.body.roles && Array.isArray(req.body.roles)) {
-      const roles = await Role.find({ name: { $in: req.body.roles } });
-      savedUser.roles = roles.map(role => role._id);
-    } else {
-      const role = await Role.findOne({ name: "patient" });
-      savedUser.roles = [role._id];
-    }
+
+    const role = await Role.findOne({ name: { $in: req.body.roles } });
+    savedUser.roles = role._id;
 
     await savedUser.save();
 

@@ -44,6 +44,8 @@ mongoose.connect(process.env.MONGO_URI)
     }
   }
 
+initial();
+
 // routes
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
