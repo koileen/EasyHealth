@@ -31,14 +31,18 @@ exports.signup = async (req, res) => {
 exports.signin = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email }).populate("roles", "-__v");
+    console.log("User found:", user);
 
     if (!user) {
+      console.log("User not found");
       return res.status(404).send({ message: "User Not found." });
     }
 
     const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    console.log("Password is valid:", passwordIsValid);
 
     if (!passwordIsValid) {
+      console.log("Invalid password");
       return res.status(401).send({ accessToken: null, message: "Invalid Password!" });
     }
 
@@ -48,7 +52,7 @@ exports.signin = async (req, res) => {
       expiresIn: 86400 // 24 hours
     });
 
-    const authorities = user.roles.map(role => "ROLE_" + role.name.toUpperCase());
+    const authorities = ["ROLE_" + user.roles.name.toUpperCase()];
 
     res.status(200).send({
       id: user._id,
@@ -58,6 +62,7 @@ exports.signin = async (req, res) => {
       accessToken: token
     });
   } catch (err) {
+    console.error("Error:", err);
     res.status(500).send({ message: "Error Signing in" });
   }
 };
