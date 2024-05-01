@@ -108,7 +108,7 @@
       event.preventDefault();
 
        // Get the selected role value
-    const selectedRole = [document.querySelector('input[name="role"]:checked').value];
+    const selectedRole = document.querySelector('input[name="role"]:checked').value;
       const formData = {
         fullname: document.getElementById('signupFullName').value,
         email: document.getElementById('signupEmail').value,
