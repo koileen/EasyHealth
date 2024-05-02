@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h2>Sign Up</h2>
+  <form id="signupForm">
+    <label for="signupFullName">Full Name:</label><br>
+    <input type="text" id="signupFullName" name="signupFullName" required><br>
+    <label for="signupEmail">Email:</label><br>
+    <input type="email" id="signupEmail" name="signupEmail" required><br>
+    <label for="signupBirthday">Birthday:</label><br>
+    <input type="date" id="signupBirthday" name="signupBirthday" required><br>
+    <label for="signupPassword">Password:</label><br>
+    <input type="password" id="signupPassword" name="signupPassword" required><br>
+    <label>Role:</label><br>
+    <input type="radio" id="rolePatient" name="role" value="patient" checked>
+    <label for="rolePatient">Patient</label><br>
+    <input type="radio" id="roleMedicalPersonnel" name="role" value="medical_personnel">
+    <label for="roleMedicalPersonnel">Medical Staff</label><br><br>
+    <button type="submit">Sign Up</button>
+  </form>
+
+  <a href="/" class="button">Back</a>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+       // Get the selected role value
+    const selectedRole = document.querySelector('input[name="role"]:checked').value;
+      const formData = {
+        fullname: document.getElementById('signupFullName').value,
+        email: document.getElementById('signupEmail').value,
+        birthday: document.getElementById('signupBirthday').value,
+        password: document.getElementById('signupPassword').value,
+        role: selectedRole // Use the captured role here
+      };
+      try {
+            const response = await fetch('http://localhost:8080/api/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+            });
+            const data = await response.json();
+            alert(data.message);
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Registration failed!');
+        }
+        });
+  </script>
+</body>
+</html>

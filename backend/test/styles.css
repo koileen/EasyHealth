@@ -1,0 +1,15 @@
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Change the background color to your preference */
+    color: #ffffff; /* Change the text color to your preference */
+    text-decoration: none; /* Remove underline from the link */
+    border: none;
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #0056b3; /* Change the background color on hover */
+  }
+  

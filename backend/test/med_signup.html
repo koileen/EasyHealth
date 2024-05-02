@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medical Professional Sign Up</title>
+</head>
+<body>
+    <h2>Sign Up as Medical Professional</h2>
+    <form id="medSignupForm">
+        <label for="signupFullName">Full Name:</label><br>
+        <input type="text" id="signupFullName" name="signupFullName" required><br>
+        <label for="signupEmail">Email:</label><br>
+        <input type="email" id="signupEmail" name="signupEmail" required><br>
+        <label for="signupBirthday">Birthday:</label><br>
+        <input type="date" id="signupBirthday" name="signupBirthday" required><br>
+        <label for="signupPassword">Password:</label><br>
+        <input type="password" id="signupPassword" name="signupPassword" required><br>
+        <label for="signupProfession">Profession:</label><br>
+        <input type="text" id="signupProfession" name="signupProfession" required><br>
+        <label for="signupSpecializations">Specializations:</label><br>
+        <div id="specializationsContainer">
+            <div class="specializationEntry">
+                <input type="text" class="specialization" name="signupSpecializations" required>
+            </div>
+        </div>
+        <button type="button" id="addSpecialization">Add Specialization</button><br><br>
+        <label for="signupLicense">License Number:</label><br>
+        <input type="text" id="signupLicense" name="signupLicense" required><br><br>
+        <button type="submit">Sign Up</button>
+    </form>
+
+<script>
+     document.getElementById('addSpecialization').addEventListener('click', function() {
+        const container = document.getElementById('specializationsContainer');
+        const entry = document.createElement('div');
+        entry.classList.add('specializationEntry');
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.classList.add('specialization');
+        input.name = 'signupSpecializations';
+        input.required = true;
+
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.textContent = 'Delete';
+        deleteButton.classList.add('deleteSpecialization');
+
+        entry.appendChild(input);
+        entry.appendChild(deleteButton);
+        container.appendChild(entry);
+
+        deleteButton.addEventListener('click', function() {
+            entry.remove();
+        });
+    });
+
+    document.getElementById('medSignupForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const formData = {
+            fullname: document.getElementById('signupFullName').value,
+            email: document.getElementById('signupEmail').value,
+            birthday: document.getElementById('signupBirthday').value,
+            password: document.getElementById('signupPassword').value,
+            profession: document.getElementById('signupProfession').value,
+            specializations: Array.from(document.querySelectorAll('.specialization')).map(input => input.value),
+            license: document.getElementById('signupLicense').value
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/api/med/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            const data = await response.json();
+            alert(data.message);
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Registration failed!');
+        }
+    });
+</script>
+
+</body>
+</html>
