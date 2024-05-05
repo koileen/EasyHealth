@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path"); 
 const db = require("./app/models");
 const mongoose = require("mongoose");
 require('dotenv').config();
@@ -13,8 +14,28 @@ var corsOptions = {
 app.use(cors(corsOptions));
 const Role = db.role;
 
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
+// Serve static files from the 'test' directory
+app.use(express.static(path.join(__dirname, "test")));
+
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "backend", "test", "home.html"));
+});
+
+// Serve the login page
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "backend", "test", "login.html"));
+});
+
+app.get("/user-signup", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "backend", "test", "user-signup.html"));
+});
+
+app.get("/med-signup", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "backend", "test", "med-signup.html"));
+});
+
+
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -33,7 +54,8 @@ mongoose.connect(process.env.MONGO_URI)
         await Promise.all([
           new Role({ name: "patient" }).save(),
           new Role({ name: "medical_personnel" }).save(),
-          new Role({ name: "admin" }).save()
+          new Role({ name: "admin" }).save(),
+          new Role({ name: "unverified_med" }).save()
         ]);
         console.log("Roles initialized successfully.");
       } else {
@@ -47,8 +69,10 @@ mongoose.connect(process.env.MONGO_URI)
 initial();
 
 // routes
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
+require('./app/routes/get.routes')(app);
+require('./app/routes/post.routes')(app);
+require('./app/routes/put.routes')(app);
+require('./app/routes/delete.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
