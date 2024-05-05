@@ -1,5 +1,6 @@
 const { authJwt } = require("../middleware");
 const controller = require("../controllers/user.controller");
+const { getAllSchedules } = require("../controllers/schedule.controller");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -25,4 +26,6 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+
+  app.get("/api/schedules/:doctorId", [authJwt.verifyToken], getAllSchedules);
 };
