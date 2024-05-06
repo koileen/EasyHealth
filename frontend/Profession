@@ -4,7 +4,7 @@
             <link href="https://fonts.googleapis.com/css?family=Bai+Jamjuree&display=swap" rel="stylesheet" />
             <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
             <link href="./css/main.css" rel="stylesheet" />
-            <title>Pcare</title>
+            <title>Profession</title>
         </head>
         <body>
             <div class="v35_483">
@@ -21,7 +21,7 @@
                     <div class="v35_487"></div>
                     <a class="v35_492" href="Home.html">Sign out</a>
                 </div>
-                <div class="PrimaryCare" style="width: 745px; height: 78px; left: 104px; top: 258px; position: absolute; color: #A61A1A; font-size: 64px; font-family: Poppins; font-weight: 600; word-wrap: break-word">Primary Care</div>      <div class="Rectangle28" style="width: 1225px; height: 118px; left: 104px; top: 355px; position: absolute; background: #DEE9ED"></div>
+                <div class="Profession" style="width: 745px; height: 78px; left: 104px; top: 258px; position: absolute; color: #A61A1A; font-size: 64px; font-family: Poppins; font-weight: 600; word-wrap: break-word">Primary Care</div>      <div class="Rectangle28" style="width: 1225px; height: 118px; left: 104px; top: 355px; position: absolute; background: #DEE9ED"></div>
       <div class="Rectangle34" style="width: 311px; height: 375px; left: 70px; top: 539px; position: absolute; background: #D9D9D9"></div>
       <div class="Rectangle35" style="width: 311px; height: 375px; left: 401px; top: 539px; position: absolute; background: #D9D9D9"></div>
       <div class="Rectangle36" style="width: 311px; height: 375px; left: 732px; top: 539px; position: absolute; background: #D9D9D9"></div>
