@@ -11,6 +11,7 @@ db.med = require("./doctor.model");
 db.loc = require("./location.model");
 db.sched = require("./schedule.model");
 db.appoint = require("./appointment.model");
+// db.file = require("./appointment.model");
 db.ROLES = ["patient", "medical_personnel", "unverified_med", "admin"];
 
 module.exports = db;
