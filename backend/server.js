@@ -35,6 +35,10 @@ app.get("/med-signup", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "backend", "test", "med-signup.html"));
 });
 
+// app.get("/file-upload", (req, res) => {
+//   res.sendFile(path.join(__dirname, "..", "backend", "test", "files-upload.html"));
+// });
+
 
 
 // parse requests of content-type - application/json
