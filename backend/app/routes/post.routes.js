@@ -1,7 +1,9 @@
 const { verifySignUp } = require("../middleware");
+const { authJwt } = require("../middleware");
 const controller = require("../controllers/auth.controller");
 const schedController = require("../controllers/schedule.controller");
 const appointController = require("../controllers/appointment.controller");
+const fileController = require("../controllers/file.controller");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -33,7 +35,9 @@ module.exports = function(app) {
 
   app.post("/api/med/signin", controller.signin_med);
 
-  app.post("/api/schedule/add", schedController.addSchedule);
+  app.post("/api/schedule/add", [authJwt.verifyToken], schedController.addSchedule);
 
-  app.post("/api/appointment/add", appointController.addAppointment);
+  app.post("/api/appointment/add", [authJwt.verifyToken], appointController.addAppointment);
+
+  // app.post("/api/file/upload", [authJwt.verifyToken], fileController.uploadFile);
 };
