@@ -3,10 +3,11 @@ const db = require("../models");
 const Med = db.med;
 const Loc = db.loc;
 const Sched = db.sched;
-
+const Appoint = db.appoint;
 exports.addSchedule = async (req, res) => {
   try {
-    const { doctorId, locationName, dayOfWeek, startTime, endTime, maxAppointments } = req.body;
+    const { locationName, dayOfWeek, startTime, endTime, maxAppointments } = req.body;
+    const doctorId = req.userId;
 
     // Check if doctor exists
     const doctor = await Med.findById(doctorId);
@@ -19,6 +20,42 @@ exports.addSchedule = async (req, res) => {
     if (!location) {
       location = new Loc({ name: locationName });
       location = await location.save();
+    }
+
+    // Check if the location already has a schedule for the same dayOfWeek
+    const existingSchedule = await Sched.findOne({ location: location._id, dayOfWeek: { $in: dayOfWeek } });
+    if (existingSchedule) {
+      return res.status(400).json({ message: `A schedule already exists for ${dayOfWeek} at ${locationName}.` });
+    }
+
+    const startTimeMillis = Date.parse(`01/01/2000 ${startTime}`);
+    const endTimeMillis = Date.parse(`01/01/2000 ${endTime}`);
+
+    // Loop through each day of the week
+    for (const day of dayOfWeek) {
+        // Find schedules for the current day
+        const schedules = await Sched.find({ doctor: doctorId, dayOfWeek: day });
+
+        // Check for conflicts with each schedule for the current day
+        for (const schedule of schedules) {
+            const scheduleStartTimeMillis = Date.parse(`01/01/2000 ${schedule.startTime}`);
+            const scheduleEndTimeMillis = Date.parse(`01/01/2000 ${schedule.endTime}`);
+
+            // Check if there is an overlap between the new schedule and the current schedule
+            if (
+                (startTimeMillis >= scheduleStartTimeMillis && startTimeMillis < scheduleEndTimeMillis) ||
+                (endTimeMillis > scheduleStartTimeMillis && endTimeMillis <= scheduleEndTimeMillis) ||
+                (startTimeMillis <= scheduleStartTimeMillis && endTimeMillis >= scheduleEndTimeMillis)
+            ) {
+                // Fetch the location name for the conflicting schedule
+                const locName = await Loc.findOne({ _id: schedule.location });
+
+                // Return the conflict message
+                return res.status(400).json({
+                    message: `Conflicting time slot for ${day} at ${locName ? locName.name : 'Unknown location'}.`
+                });
+            }
+        }
     }
 
     // Create the new schedule
@@ -144,7 +181,7 @@ exports.deleteSchedule = async (req, res) => {
   }
 };
 
-exports.getAllSchedules = async (req, res) => {
+exports.getSchedules = async (req, res) => {
   try {
     const { doctorId } = req.params;
     const { userId } = req;
@@ -168,5 +205,36 @@ exports.getAllSchedules = async (req, res) => {
   } catch (error) {
     console.error('Error getting schedules:', error);
     res.status(500).json({ message: "An error occurred while getting schedules." });
+  }
+};
+
+exports.viewAppointmentsUnderSchedule = async (req, res) => {
+  try {
+    const { scheduleId } = req.params;
+    const { status } = req.params;
+    const doctorId = req.userId;
+
+    // Find the schedule
+    const schedule = await Sched.findById(scheduleId);
+    if (!schedule) {
+      return res.status(404).json({ message: "Schedule not found." });
+    }
+
+    // Check if the doctor is authorized to view appointments for this schedule
+    if (schedule.doctor.toString() !== doctorId) {
+      return res.status(403).json({ message: "You are not authorized to view appointments for this schedule." });
+    }
+
+    // Find all appointments for this schedule
+    const appointments = await Appoint.find({ schedule: scheduleId, status: status })
+    .populate({
+      path: 'patient',
+      select: 'fullname email'
+    })
+
+    res.status(200).json({ appointments: appointments });
+  } catch (error) {
+    console.error("Error fetching appointments under schedule:", error);
+    res.status(500).json({ message: "An error occurred while fetching appointments under schedule." });
   }
 };
