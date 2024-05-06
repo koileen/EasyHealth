@@ -3,7 +3,7 @@ const { authJwt } = require("../middleware");
 const controller = require("../controllers/auth.controller");
 const schedController = require("../controllers/schedule.controller");
 const appointController = require("../controllers/appointment.controller");
-const fileController = require("../controllers/file.controller");
+// const fileController = require("../controllers/file.controller");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
