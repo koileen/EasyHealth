@@ -14,26 +14,26 @@ var corsOptions = {
 app.use(cors(corsOptions));
 const Role = db.role;
 
-// Serve static files from the 'test' directory
-app.use(express.static(path.join(__dirname, "test")));
+// // Serve static files from the 'test' directory
+// app.use(express.static(path.join(__dirname, "test")));
 
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "backend", "test", "home.html"));
-});
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "..", "backend", "test", "home.html"));
+// });
 
-// Serve the login page
-app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "backend", "test", "login.html"));
-});
+// // Serve the login page
+// app.get("/login", (req, res) => {
+//   res.sendFile(path.join(__dirname, "..", "backend", "test", "login.html"));
+// });
 
-app.get("/user-signup", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "backend", "test", "user-signup.html"));
-});
+// app.get("/user-signup", (req, res) => {
+//   res.sendFile(path.join(__dirname, "..", "backend", "test", "user-signup.html"));
+// });
 
-app.get("/med-signup", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "backend", "test", "med-signup.html"));
-});
+// app.get("/med-signup", (req, res) => {
+//   res.sendFile(path.join(__dirname, "..", "backend", "test", "med-signup.html"));
+// });
 
 // app.get("/file-upload", (req, res) => {
 //   res.sendFile(path.join(__dirname, "..", "backend", "test", "files-upload.html"));
