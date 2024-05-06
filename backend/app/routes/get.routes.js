@@ -1,6 +1,7 @@
 const { authJwt } = require("../middleware");
 const controller = require("../controllers/user.controller");
-const { getAllSchedules } = require("../controllers/schedule.controller");
+const schedController  = require("../controllers/schedule.controller");
+const getAppointments = require("../controllers/appointment.controller");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -27,5 +28,9 @@ module.exports = function(app) {
     controller.adminBoard
   );
 
-  app.get("/api/schedules/:doctorId", [authJwt.verifyToken], getAllSchedules);
+  app.get("/api/schedules/:doctorId", [authJwt.verifyToken], schedController.getSchedules);
+
+  app.get("/api/patient/appointments/scheduled/:patientId/:status", getAppointments.viewScheduledAppointmentsPatient);
+
+  app.get("/doctors/schedules/:scheduleId/appointments/:status", [authJwt.verifyToken], schedController.viewAppointmentsUnderSchedule);
 };
