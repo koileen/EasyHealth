@@ -2521,11 +2521,24 @@ body {
   left: 0px;
   overflow: hidden;
 }
-.name {
-  color: #fff;
+.label {
+  width: 1279px;
+  height: 40px;
 }
-.name {
-  color: #fff;
+
+.label .text-wrapper {
+  position: absolute;
+  width: 1279px;
+  top: 354px;
+  left: 104px;
+  text-shadow: 0px 4px 4px #00000040;
+  font-family: "Poppins-Regular", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  word-wrap: break-word;
 }
 .name {
   color: #fff;
