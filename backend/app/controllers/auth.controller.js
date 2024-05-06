@@ -132,3 +132,38 @@ exports.signin_med = async (req, res) => {
     res.status(500).send({ message: "Error Signing in" });
   }
 };
+
+exports.editMed = async (req, res) => {
+  try {
+    // Find the doctor by their ID
+    const { medId } = req.params;
+
+    // Check if the doctor exists
+    const med = await Med.findById(medId);
+    if (!med) {
+      return res.status(404).json({ message: "Med not found." });
+    }
+
+    // Update the med's information
+    if (req.body.fullname) {
+      med.fullname = req.body.fullname;
+    }
+    if (req.body.email) {
+      med.email = req.body.email;
+    }
+    if (req.body.specializations) {
+      med.specializations = req.body.specializations;
+    }
+
+    // Save the updated med profile
+    const updatedMed = await med.save();
+
+    res.status(200).json({
+      message: "Med profile updated successfully",
+      updatedMed: updatedMed
+    });
+  } catch (error) {
+    console.error('Error updating med profile:', error);
+    res.status(500).json({ message: "An error occurred while updating the med profile." });
+  }
+};
